@@ -8,14 +8,17 @@ import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
 import model.User;
 import model.Video;
+import model.VideoSummary;
+import repo.AdminReportRepo;
 import repo.AdminUserRepo;
 import repo.AdminVideo;
 
-@WebServlet(name="Admin", value = { "/admin/video", "/admin/video/create", "/admin/video/update", "/admin/video/delete", "/admin/video/edit/*"})
+@WebServlet(name="Admin", value = { "/admin/video", "/admin/video/create", "/admin/video/update", "/admin/video/delete", "/admin/video/edit/*", "/admin/report"})
 public class Admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	AdminVideo videorepo = new AdminVideo();
 	AdminUserRepo userrepo = new AdminUserRepo();
+	AdminReportRepo reportrepo = new AdminReportRepo();
     public Admin() {
         super();
     }
@@ -50,6 +53,13 @@ public class Admin extends HttpServlet {
 				
 			}
 			request.getRequestDispatcher("/view/admin/usermanage.jsp").forward(request, response);
+		}else if(uri.contains("report")) {
+			List<VideoSummary> list = reportrepo.One();
+			for (VideoSummary v : list) {
+				System.out.println(v.getTitle());
+			}
+			request.setAttribute("one", list);
+			request.getRequestDispatcher("/view/admin/thongkemanage.jsp").forward(request, response);
 		}
 		
 	}
