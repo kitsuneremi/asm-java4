@@ -55,11 +55,10 @@ public class Admin extends HttpServlet {
 			request.getRequestDispatcher("/view/admin/usermanage.jsp").forward(request, response);
 		}else if(uri.contains("report")) {
 			List<VideoSummary> list = reportrepo.One();
-			for (VideoSummary v : list) {
-				System.out.println(v.getTitle());
-			}
+			List<Video> listVideo = videorepo.GetListVideo();
 			request.setAttribute("one", list);
-			request.getRequestDispatcher("/view/admin/thongkemanage.jsp").forward(request, response);
+			request.setAttribute("two", listVideo);
+			request.getRequestDispatcher("/view/admin/reportmanage.jsp").forward(request, response);
 		}
 		
 	}

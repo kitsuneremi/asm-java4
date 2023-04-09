@@ -14,7 +14,7 @@ public class AdminReportRepo {
 	public List<VideoSummary> One(){
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("asmjava");
 		EntityManager em = emf.createEntityManager();
-		String hql = "select new VideoSummary( v.title, count(v.favourites), min(f.likeDate), max(f.likeDate) ) from Video v join v.favourites f group by v.id";
+		String hql = "select new VideoSummary( v.title, count(f), min(f.likeDate), max(f.likeDate) ) from Video v join v.favourites f group by v.id";
 		try {
 			em.getTransaction().begin();
 			TypedQuery<VideoSummary> query = em.createQuery(hql, VideoSummary.class);
