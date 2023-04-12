@@ -27,11 +27,11 @@ public class User implements Serializable {
 	private String password;
 
 	//bi-directional many-to-one association to Favourite
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", cascade = CascadeType.REMOVE)
 	private List<Favourite> favourites;
 
 	//bi-directional many-to-one association to Share
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", cascade = CascadeType.REMOVE)
 	private List<Share> shares;
 
 	public User() {

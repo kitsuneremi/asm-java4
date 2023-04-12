@@ -6,14 +6,16 @@ import java.util.List;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
+import model.Sender;
 import model.User;
+import model.Userfav;
 import model.Video;
 import model.VideoSummary;
 import repo.AdminReportRepo;
 import repo.AdminUserRepo;
 import repo.AdminVideo;
 
-@WebServlet(name="Admin", value = { "/admin/video", "/admin/video/create", "/admin/video/update", "/admin/video/delete", "/admin/video/edit/*", "/admin/report"})
+@WebServlet(name="Admin", value = { "/admin/video", "/admin/video/create", "/admin/video/update", "/admin/video/delete", "/admin/video/edit/*", "/admin/user","/admin/user/edit/*", "/admin/user/update", "/admin/user/delete/*" ,"/admin/report", "/admin/report/*"})
 public class Admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	AdminVideo videorepo = new AdminVideo();
@@ -36,7 +38,12 @@ public class Admin extends HttpServlet {
 				request.setAttribute("poster", v.getPoster());
 				request.setAttribute("title", v.getTitle());
 				request.setAttribute("view", v.getViews());
-				request.setAttribute("active", v.getActive());
+				if(v.getActive() == 0) {
+					request.setAttribute("active", "active");
+				}else{
+					request.setAttribute("active", "inactive");
+				}
+				
 			}
 			request.getRequestDispatcher("/view/admin/videomanage.jsp").forward(request, response);
 		}else if(uri.contains("user")) {
@@ -49,8 +56,11 @@ public class Admin extends HttpServlet {
 				request.setAttribute("fullname", u.getFullname());
 				request.setAttribute("email", u.getEmail());
 				request.setAttribute("pass", u.getPassword());
-				request.setAttribute("admin", u.getAdmin());
-				
+				if(u.getAdmin() == 1) {
+					request.setAttribute("role", "admin");
+				}else {
+					request.setAttribute("role", "user");
+				}
 			}
 			request.getRequestDispatcher("/view/admin/usermanage.jsp").forward(request, response);
 		}else if(uri.contains("report")) {
@@ -58,6 +68,12 @@ public class Admin extends HttpServlet {
 			List<Video> listVideo = videorepo.GetListVideo();
 			request.setAttribute("one", list);
 			request.setAttribute("two", listVideo);
+			if(uri.split("repor")[1].contains("/")) {
+				List<Userfav> listx = reportrepo.Two(uri.split("/")[4]);
+				List<Sender> listy = reportrepo.Three(uri.split("/")[4]);
+				request.setAttribute("listUser", listx);
+				request.setAttribute("listSender", listy);
+			}
 			request.getRequestDispatcher("/view/admin/reportmanage.jsp").forward(request, response);
 		}
 		
@@ -90,6 +106,7 @@ public class Admin extends HttpServlet {
 				String active = request.getParameter("status");
 				String des = request.getParameter("des");
 				Video v = new Video();
+				v.setId(id);
 				v.setActive(Byte.parseByte(active));
 				v.setDescription(des);
 				v.setPoster(poster);
@@ -114,10 +131,11 @@ public class Admin extends HttpServlet {
 				u.setId(id);
 				u.setPassword(password);
 				userrepo.Update(u);
-			}else if(uri.contains("update")) {
+			}else if(uri.contains("delete")) {
 				String id = request.getParameter("username");
 				userrepo.Delete(id);
 			}
+			request.getRequestDispatcher("/view/admin/usermanage.jsp").forward(request, response);
 		}
 	}
 

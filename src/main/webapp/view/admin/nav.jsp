@@ -28,15 +28,14 @@
 	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-	<c:url var="accurl" value="/account"></c:url>
+	<c:url var="url" value="/admin"></c:url>
 	<nav class="navbar navbar-expand-lg bg-body-tertiary">
 		<div class="container-fluid">
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item"><a class="nav-link">Home</a></li>
-					<li class="nav-item"><a class="nav-link">Videos</a></li>
-					<li class="nav-item"><a class="nav-link">Users</a></li>
-					<li class="nav-item"><a class="nav-link">Reports</a></li>
+					<li class="nav-item"><a href="${url}/video" class="nav-link">Videos</a></li>
+					<li class="nav-item"><a href="${url}/user" class="nav-link">Users</a></li>
+					<li class="nav-item"><a href="${url}/report" class="nav-link">Reports</a></li>
 				</ul>
 			</div>
 		</div>

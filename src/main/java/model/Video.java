@@ -29,11 +29,11 @@ public class Video implements Serializable {
 	private int views;
 
 	//bi-directional many-to-one association to Favourite
-	@OneToMany(mappedBy="video")
+	@OneToMany(mappedBy="video", cascade = CascadeType.REMOVE)
 	private List<Favourite> favourites;
 
 	//bi-directional many-to-one association to Share
-	@OneToMany(mappedBy="video")
+	@OneToMany(mappedBy="video", cascade = CascadeType.REMOVE)
 	private List<Share> shares;
 
 	public Video() {
